@@ -57,7 +57,7 @@ PYBIND11_MODULE(StlAPI, mod) {
 	cls_StlAPI.def(py::init<>());
 	cls_StlAPI.def_static("Write_", [](const TopoDS_Shape & a0, const Standard_CString a1) -> Standard_Boolean { return StlAPI::Write(a0, a1); }, py::arg("theShape"), py::arg("theFile"));
 	cls_StlAPI.def_static("Write_", (Standard_Boolean (*)(const TopoDS_Shape &, const Standard_CString, const Standard_Boolean)) &StlAPI::Write, "Convert and write shape to STL format. File is written in binary if aAsciiMode is False otherwise it is written in Ascii (by default).", py::arg("theShape"), py::arg("theFile"), py::arg("theAsciiMode"));
-	cls_StlAPI.def_static("Read_", (Standard_Boolean (*)(TopoDS_Shape &, const Standard_CString)) &StlAPI::Read, "None", py::arg("theShape"), py::arg("aFile"));
+// DEPRECRATED	cls_StlAPI.def_static("Read_", (Standard_Boolean (*)(TopoDS_Shape &, const Standard_CString)) &StlAPI::Read, "None", py::arg("theShape"), py::arg("aFile"));
 
 
 }

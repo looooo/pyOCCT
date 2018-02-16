@@ -52,6 +52,8 @@ endif(ENABLE_FORCE)
 
 # Use Link Time Optimization per pybind11 documentation
 if(MSVC)
+    # Use /FORCE to ignore unresolved externals (known issue)
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /FORCE")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /LTCG")
 endif(MSVC)
 
@@ -61,6 +63,11 @@ if(NOT ENABLE_WARNINGS)
 else(NOT ENABLE_WARNINGS)
     set(WARNINGS)
 endif(NOT ENABLE_WARNINGS)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
+endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 
 # --------------------------------------------------------------------------- #
@@ -91,7 +98,7 @@ link_directories(${OpenCASCADE_LIBRARY_DIR})
 if(ENABLE_NETGEN AND ENABLE_SMESH)
     if(NOT DEFINED NETGEN_INCLUDE_DIR)
         message(STATUS "Searching for Netgen...")
-        find_package(NETGEN REQUIRED)
+        find_package(Netgen REQUIRED)
     endif()
 
     if(NOT EXISTS ${NETGEN_INCLUDE_DIR})
@@ -199,6 +206,9 @@ include_directories(${Boost_INCLUDE_DIR})
 # PTHREAD
 # --------------------------------------------------------------------------- #
 if(ENABLE_SMESH)
+    if (UNIX)
+        find_package(Threads REQUIRED)
+    else (UNIX)
     set(PTHREAD_INCLUDE_DIRS "" CACHE PATH "pthread include directory.")
 
     if(NOT EXISTS ${PTHREAD_INCLUDE_DIRS})
@@ -207,6 +217,7 @@ if(ENABLE_SMESH)
 
     message(STATUS "pthread include directory: ${PTHREAD_INCLUDE_DIRS}")
     include_directories(${PTHREAD_INCLUDE_DIRS})
+endif (UNIX)
 endif()
 
 
@@ -235,7 +246,9 @@ include_directories(${PYTHON_INCLUDE_PATH})
 # --------------------------------------------------------------------------- #
 # PYBIND11
 # --------------------------------------------------------------------------- #
-add_subdirectory(pybind11)
+find_package(pybind11 REQUIRED)
+# add_subdirectory(pybind11)
+
 
 
 # --------------------------------------------------------------------------- #
@@ -255,6 +268,13 @@ file(GLOB SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 set(MAKE_LIB BOOL ON)
 foreach(SRC ${SRCS})
     get_filename_component(MOD ${SRC} NAME_WE)
+    
+    if (UNIX)
+	if (${MOD} STREQUAL "WNT")
+	    message(STATUS "skipping  ${MOD}")
+	    continue()
+	endif()
+    endif()
     
     # Check for SMESH modules
     list(FIND SMESH_MODULES ${MOD} _INDEX)

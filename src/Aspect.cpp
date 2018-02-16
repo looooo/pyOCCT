@@ -407,7 +407,7 @@ PYBIND11_MODULE(Aspect, mod) {
 	cls_Aspect_Window.def("Size", [](Aspect_Window &self, Standard_Integer & Width, Standard_Integer & Height){ self.Size(Width, Height); return std::tuple<Standard_Integer &, Standard_Integer &>(Width, Height); }, "Returns The Window SIZE in PIXEL", py::arg("Width"), py::arg("Height"));
 	cls_Aspect_Window.def("NativeHandle", (Aspect_Drawable (Aspect_Window::*)() const ) &Aspect_Window::NativeHandle, "Returns native Window handle (HWND on Windows, Window with Xlib, and so on)");
 	cls_Aspect_Window.def("NativeParentHandle", (Aspect_Drawable (Aspect_Window::*)() const ) &Aspect_Window::NativeParentHandle, "Returns parent of native Window handle (HWND on Windows, Window with Xlib, and so on)");
-	cls_Aspect_Window.def("NativeFBConfig", (Aspect_FBConfig (Aspect_Window::*)() const ) &Aspect_Window::NativeFBConfig, "Returns native Window FB config (GLXFBConfig on Xlib)");
+// FIXME	cls_Aspect_Window.def("NativeFBConfig", (Aspect_FBConfig (Aspect_Window::*)() const ) &Aspect_Window::NativeFBConfig, "Returns native Window FB config (GLXFBConfig on Xlib)");
 	cls_Aspect_Window.def_static("get_type_name_", (const char * (*)()) &Aspect_Window::get_type_name, "None");
 	cls_Aspect_Window.def_static("get_type_descriptor_", (const opencascade::handle<Standard_Type> & (*)()) &Aspect_Window::get_type_descriptor, "None");
 	cls_Aspect_Window.def("DynamicType", (const opencascade::handle<Standard_Type> & (Aspect_Window::*)() const ) &Aspect_Window::DynamicType, "None");
@@ -548,9 +548,9 @@ PYBIND11_MODULE(Aspect, mod) {
 	cls_Aspect_NeutralWindow.def("DynamicType", (const opencascade::handle<Standard_Type> & (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::DynamicType, "None");
 	cls_Aspect_NeutralWindow.def("NativeHandle", (Aspect_Drawable (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::NativeHandle, "Return native handle of this drawable.");
 	cls_Aspect_NeutralWindow.def("NativeParentHandle", (Aspect_Drawable (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::NativeParentHandle, "Return native handle of the parent drawable.");
-	cls_Aspect_NeutralWindow.def("NativeFBConfig", (Aspect_FBConfig (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::NativeFBConfig, "Return FBConfig.");
+// FIXME	cls_Aspect_NeutralWindow.def("NativeFBConfig", (Aspect_FBConfig (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::NativeFBConfig, "Return FBConfig.");
 	cls_Aspect_NeutralWindow.def("SetNativeHandle", (Standard_Boolean (Aspect_NeutralWindow::*)(Aspect_Drawable)) &Aspect_NeutralWindow::SetNativeHandle, "Set native handle.", py::arg("theWindow"));
-	cls_Aspect_NeutralWindow.def("SetNativeHandles", (Standard_Boolean (Aspect_NeutralWindow::*)(Aspect_Drawable, Aspect_Drawable, Aspect_FBConfig)) &Aspect_NeutralWindow::SetNativeHandles, "Set native handles.", py::arg("theWindow"), py::arg("theParentWindow"), py::arg("theFbConfig"));
+// FIXME	cls_Aspect_NeutralWindow.def("SetNativeHandles", (Standard_Boolean (Aspect_NeutralWindow::*)(Aspect_Drawable, Aspect_Drawable, Aspect_FBConfig)) &Aspect_NeutralWindow::SetNativeHandles, "Set native handles.", py::arg("theWindow"), py::arg("theParentWindow"), py::arg("theFbConfig"));
 	cls_Aspect_NeutralWindow.def("IsMapped", (Standard_Boolean (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::IsMapped, "Return true if window is not hidden.");
 	cls_Aspect_NeutralWindow.def("Map", (void (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::Map, "Change window mapped flag to TRUE.");
 	cls_Aspect_NeutralWindow.def("Unmap", (void (Aspect_NeutralWindow::*)() const ) &Aspect_NeutralWindow::Unmap, "Change window mapped flag to FALSE.");
@@ -601,8 +601,8 @@ PYBIND11_MODULE(Aspect, mod) {
 	cls__xwd_file_header.def(py::init<>());
 
 	// C:\Miniconda\envs\occt\Library\include\opencascade\Aspect_XWD.hxx
-	py::class_<_xcolor, std::unique_ptr<_xcolor, Deleter<_xcolor>>> cls__xcolor(mod, "_xcolor", "None");
-	cls__xcolor.def(py::init<>());
+// FIXME	py::class_<_xcolor, std::unique_ptr<_xcolor, Deleter<_xcolor>>> cls__xcolor(mod, "_xcolor", "None");
+// FIXME	cls__xcolor.def(py::init<>());
 
 	// C:\Miniconda\envs\occt\Library\include\opencascade\Aspect_PolygonOffsetMode.hxx
 	// C:\Miniconda\envs\occt\Library\include\opencascade\Aspect_Handle.hxx

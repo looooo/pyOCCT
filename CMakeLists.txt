@@ -27,7 +27,7 @@ option(ENABLE_SMESH "Enable SMESH" OFF)
 option(ENABLE_NETGEN "Enable Netgen" OFF)
 option(ENABLE_BLSURF "Enable BLSURF" OFF)
 option(ENABLE_FORCE "Force build even if unresolved externals are found" OFF)
-option(ENABLE_WARNINGS "Disable warning output." OFF)
+option(ENABLE_WARNINGS "Disable warning output." ON)
 
 
 # --------------------------------------------------------------------------- #
@@ -66,7 +66,6 @@ endif(NOT ENABLE_WARNINGS)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 
@@ -247,6 +246,9 @@ include_directories(${PYTHON_INCLUDE_PATH})
 # PYBIND11
 # --------------------------------------------------------------------------- #
 find_package(pybind11 REQUIRED)
+if(CMAKE_COMPILER_IS_GNUCXX)   
+    add_definitions("-Wl,--no-undefined")
+endif(CMAKE_COMPILER_IS_GNUCXX)
 # add_subdirectory(pybind11)
 
 
@@ -299,9 +301,13 @@ foreach(SRC ${SRCS})
         pybind11_add_module(${MOD} ${SRC})
         target_link_libraries(${MOD} PUBLIC ${OpenCASCADE_LIBRARIES}
                                             ${SMESH_ABS_LIBS})
-        set_target_properties(${MOD} PROPERTIES SUFFIX ${EXTENSION} COMPILE_FLAGS ${WARNINGS})
-        install(FILES ${OUTPUT_PATH}/${MOD}${EXTENSION}
-                DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/OCCT)
+        if (WARNINGS)
+	        set_target_properties(${MOD} PROPERTIES SUFFIX ${EXTENSION} COMPILE_FLAGS ${WARNINGS})
+    	else (WARNINGS)
+    	    set_target_properties(${MOD} PROPERTIES SUFFIX ${EXTENSION}})
+    	endif(WARNINGS)
+            install(FILES ${OUTPUT_PATH}/${MOD}${EXTENSION}
+                    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/OCCT)
     endif()
     set(MAKE_LIB ON)
 endforeach()

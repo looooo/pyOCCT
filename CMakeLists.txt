@@ -52,7 +52,6 @@ endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 
@@ -234,6 +233,10 @@ include_directories(${PYTHON_INCLUDE_PATH})
 # --------------------------------------------------------------------------- #
 find_package(pybind11 REQUIRED)
 # add_subdirectory(pybind11)
+
+if(CMAKE_COMPILER_IS_GNUCXX)   
+    add_definitions("-Wl,--no-undefined")
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
 
